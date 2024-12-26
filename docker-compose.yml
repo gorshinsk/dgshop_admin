@@ -1,0 +1,46 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: dgshop-app
+        working_dir: /var/www/html
+        volumes:
+            - .:/var/www/html
+        ports:
+            - 8000:8000
+        networks:
+            - app-network
+        depends_on:
+            - db
+
+    webserver:
+        image: nginx:alpine
+        container_name: laravel-nginx
+        ports:
+            - 8080:80
+        volumes:
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - .:/var/www/html
+        depends_on:
+            - app
+        networks:
+            - app-network
+
+    db:
+        image: mysql:8.0
+        container_name: dgshop-db
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: dgshop
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        ports:
+            - 3306:3306
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
