@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\API\Product;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Http\Resources\Product\ProductResource;
+use App\Models\Product;
 
 class IndexController extends Controller
 {
     public function __invoke()
     {
-        return 11111111;
+        $products = Product::all();
+        // return ProductResource::collection($products);
+        return ProductResource::collection($products);
     }
 }

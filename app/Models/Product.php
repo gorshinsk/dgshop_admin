@@ -11,10 +11,16 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
     public function color()
     {
         return $this->belongsTo(Color::class, 'color_id');
+    }
+
+    public function getImageUrlAttribute() {
+        // $this->imageUrl
+        // return 'fevegre';
+        return url(  'storage/' . $this->preview_image) ;
     }
 }
